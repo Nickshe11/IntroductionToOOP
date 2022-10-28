@@ -90,9 +90,52 @@ public:
 		integer++;
 		return old;
 	}
+	
+	Fraction& operator +=(Fraction second)
+	{
+		Fraction first = *this;
+		first.to_improper();
+		second.to_improper();
+		this->numerator = first.get_numerator()*second.get_denominator() + second.get_numerator()*first.get_denominator();
+		this->denominator = first.get_denominator() * second.get_denominator();
+		this->to_proper();
+		return *this;
+	}
+
+	Fraction& operator -=(Fraction second)
+	{
+		Fraction first = *this;
+		first.to_improper();
+		second.to_improper();
+		this->numerator = first.get_numerator() * second.get_denominator() - second.get_numerator() * first.get_denominator();
+		this->denominator = first.get_denominator() * second.get_denominator();
+		this->to_proper();
+		return *this;
+	}
+
+	Fraction& operator *=(Fraction second)
+	{
+		Fraction first = *this;
+		first.to_improper();
+		second.to_improper();
+		this->numerator = first.get_numerator() * second.get_numerator();
+		this->denominator = first.get_denominator() * second.get_denominator();
+		this->to_proper();
+		return *this;
+	}
+	Fraction& operator /=(Fraction second)
+	{
+		Fraction first = *this;
+		first.to_improper();
+		second.to_improper();
+		this->numerator = first.get_numerator() * second.get_denominator();
+		this->denominator = first.get_denominator() * second.get_numerator();
+		this->to_proper();
+		return *this;
+	}
 
 
-	//Opreators
+	//Operators
 	Fraction& operator=(const Fraction& other)
 	{
 		this->integer = other.integer;
@@ -126,7 +169,19 @@ public:
 		swap(inverted.numerator, inverted.denominator);
 		return inverted;
 	}
-
+	Fraction& reduce()
+	{
+		for (int i = 10; i != 1;i-- )
+		{
+			if ((this->numerator) % i == 0 && (this->denominator) % i == 0)
+			{
+				this->numerator /= i;
+				this->denominator /= i;
+				i++;
+			}
+		}
+		return *this;
+	}
 };
 ostream& operator<<(ostream& os, const Fraction& obj)
 {
@@ -182,6 +237,44 @@ Fraction operator+(Fraction left, Fraction right)
 	).to_proper();
 }
 
+bool operator==(const Fraction& first, const Fraction& second)
+{
+
+	return first.get_integer() == second.get_integer() && first.get_numerator() * second.get_denominator() == second.get_numerator() * first.get_denominator();
+}
+
+bool operator !=(const Fraction& first, const Fraction& second)
+{
+	return !(first == second);
+}
+
+bool operator<(const Fraction& first, const Fraction& second)
+{
+	if (first.get_integer() == second.get_integer())
+		return (first.get_numerator() * second.get_denominator()) < (second.get_numerator() * first.get_denominator());
+	else return first.get_integer() < second.get_integer();
+}
+
+bool operator<=(const Fraction& first, const Fraction& second)
+{
+	if (first.get_integer() == second.get_integer())
+		return (first.get_numerator() * second.get_denominator()) <= (second.get_numerator() * first.get_denominator());
+	else return first.get_integer() <= second.get_integer();
+}
+bool operator>(const Fraction& first, const Fraction& second)
+{
+	if (first.get_integer() == second.get_integer())
+		return (first.get_numerator() * second.get_denominator()) > (second.get_numerator() * first.get_denominator());
+	else return first.get_integer() > second.get_integer();
+}
+bool operator>=(const Fraction& first, const Fraction& second)
+{
+	if (first.get_integer() == second.get_integer())
+		return (first.get_numerator() * second.get_denominator()) >= (second.get_numerator() * first.get_denominator());
+	else return first.get_integer() >= second.get_integer();
+}
+
+
 //#define CONSTRUCTORS_CHECK
 
 void main()
@@ -211,4 +304,22 @@ void main()
 		cout << i << "\t";
 	}
 	cout << endl;
+
+	A += B;
+	cout<<A<<endl;
+	cout << delimiter << endl;
+	A -= B;
+	cout << A << endl;
+	cout << delimiter << endl;
+	A *= B;
+	cout << A << endl;
+	cout << delimiter << endl;
+	A /= B;
+	cout << A << endl;
+	cout << delimiter << endl;
+
+	Fraction X(2, 25, 100);
+	cout << X << endl;
+	X.reduce();
+	cout << X << endl;
 }
