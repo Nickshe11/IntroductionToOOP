@@ -1,9 +1,9 @@
-#include<iostream>
+п»ї#include<iostream>
 using namespace std;
 
 #define delimiter "\n_______________________________"
 
-class Fraction;//Объявление класса
+class Fraction;//РћР±СЉСЏРІР»РµРЅРёРµ РєР»Р°СЃСЃР°
 Fraction operator*(Fraction left, Fraction right);
 
 class Fraction
@@ -388,11 +388,11 @@ void main()
 Fraction B(5, 11);
 if (A == B)
 {
-	cout << "Дроби равны" << endl;
+	cout << "Р”СЂРѕР±Рё СЂР°РІРЅС‹" << endl;
 }
 else
 {
-	cout << "Дроби разные" << endl;
+	cout << "Р”СЂРѕР±Рё СЂР°Р·РЅС‹Рµ" << endl;
 }*/
 	cout << (Fraction(1, 2) >= Fraction(5, 10)) << endl;
 #endif // COMPARISON_OPERATORS_CHECK
