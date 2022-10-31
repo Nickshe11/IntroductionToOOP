@@ -55,11 +55,13 @@ public:
 		cout << "1ArgConstructor:\t" << this << endl;
 	}
 
-	Fraction(double a)
+	Fraction(double decimal)
 	{
-		this->integer = (int)a;
-		this->numerator = (a - (int)a) * 100;
-		this->denominator = 100;
+		integer = decimal;
+		decimal += 1e-10; //округляем результат - скидываем девятки на 10 знаков после запятой в нули
+		denominator = 1e+9; //миллиард, то есть 10 в 9 степени
+		numerator = (decimal - integer) * denominator;
+		reduce();
 		cout << "1ArgConstructor double:\t" << this << endl;
 	}
 
@@ -101,13 +103,13 @@ public:
 		integer++;
 		return old;
 	}
-	
+
 	Fraction& operator +=(Fraction second)
 	{
 		Fraction first = *this;
 		first.to_improper();
 		second.to_improper();
-		this->numerator = first.get_numerator()*second.get_denominator() + second.get_numerator()*first.get_denominator();
+		this->numerator = first.get_numerator() * second.get_denominator() + second.get_numerator() * first.get_denominator();
 		this->denominator = first.get_denominator() * second.get_denominator();
 		this->to_proper();
 		return *this;
@@ -155,10 +157,22 @@ public:
 		this->integer = other.integer;
 		this->numerator = other.numerator;
 		this->denominator = other.denominator;
-		cout << "CopyAssignment:\t"<< this << endl;
+		cout << "CopyAssignment:\t" << this << endl;
 		return *this;
 	}
-	
+
+	//Type-cast operators (операторы преобразования типов)
+
+	operator int()const
+	{
+		//return this->integer;
+		return integer + numerator / denominator;
+	}
+	operator double()const
+	{
+		//return double(this->integer) + double(this->numerator) / this->denominator;
+		return integer + (double)numerator / denominator;
+	}
 
 	//Methods
 	Fraction& to_improper()
@@ -187,7 +201,7 @@ public:
 	}
 	Fraction& reduce()
 	{
-		for (int i = 10; i != 1;i-- )
+		/*for (int i = 10; i != 1; i--)
 		{
 			if ((this->numerator) % i == 0 && (this->denominator) % i == 0)
 			{
@@ -196,17 +210,24 @@ public:
 				i++;
 			}
 		}
+		return *this;*/
+		if (numerator == 0)return *this;
+		int more, less, rest;//rest - остаток
+		if (numerator > denominator)more = numerator, less = denominator;
+		else less = numerator, more = denominator;
+		do
+		{
+			rest = more % less;
+			more = less;
+			less = rest;
+		} while (rest);
+		int GCD = more;// GCD - greatest common divider (наибольший общий делитель)
+		numerator /= GCD;
+		denominator /= GCD;
 		return *this;
 	}
 
-	operator int()const
-	{
-		return this->integer;
-	}
-	operator double()const
-	{
-		return double(this->integer) + double(this->numerator) / this->denominator;
-	}
+
 
 };
 ostream& operator<<(ostream& os, const Fraction& obj)
@@ -243,7 +264,7 @@ Fraction operator*(Fraction left, Fraction right)
 
 Fraction operator/(const Fraction& left, const Fraction& right)
 {
-	/*left.to_improper(); 
+	/*left.to_improper();
 	right.to_improper();*/
 	/*return Fraction
 	(
@@ -267,7 +288,7 @@ bool operator==(Fraction left, Fraction right)
 {
 	left.to_improper();
 	right.to_improper();
-	return 
+	return
 		left.get_numerator() * right.get_denominator() ==
 		right.get_numerator() * left.get_denominator();
 	//return first.get_integer() == second.get_integer() && first.get_numerator() * second.get_denominator() == second.get_numerator() * first.get_denominator();
