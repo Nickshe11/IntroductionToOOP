@@ -11,6 +11,19 @@ public:
 		return str;
 	}
 
+	int get_size()const
+	{
+		return size;
+	}
+	void set_size(int size)
+	{
+		this->size = size;
+	}
+	void set_str(int i, const char lit)
+	{
+		this->str[i] = lit;
+	}
+
 	// Constructors
 	explicit String(size_t size=80)
 	{
@@ -63,6 +76,27 @@ public:
 		cout << "str:\t" << str << endl;
 	}
 };
+
+String operator+(const String&left, const String&right)
+{
+	String temp (left.get_size() + right.get_size());
+	int i = 0;
+	for (; i < left.get_size()-1; i++)
+	{
+		temp.set_str(i, left.get_str()[i]);
+	}
+	temp.set_str(i, ' ');
+	i++;
+	
+	for (int j = 0; i < left.get_size()+ right.get_size(); i++,j++)
+	{
+		
+		temp.set_str(i, right.get_str()[j]);
+		
+	}
+	return temp;
+}
+
 ostream& operator<<(ostream& os, const String& obj)
 {
 	return os << obj.get_str();

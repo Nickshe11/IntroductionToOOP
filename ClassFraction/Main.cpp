@@ -227,7 +227,18 @@ public:
 		return *this;
 	}
 
-
+	ostream& operator>> (ostream& os)
+	{
+		int num, denom;
+		char d;
+		cin >> num;
+		cin >> d;
+		cin >> denom;
+		if (denom == 0) return os;
+		this->numerator = num;
+		this->denominator = denom;
+		return os;
+	}
 
 };
 ostream& operator<<(ostream& os, const Fraction& obj)
@@ -439,5 +450,8 @@ else
 
 #endif // HOME
 
+	Fraction A;
+	cout << "Введите простую дробь: "; cin >> A;
+	cout << A << endl;
 
 }
