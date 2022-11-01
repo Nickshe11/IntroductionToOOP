@@ -10,19 +10,22 @@ public:
 	{
 		return str;
 	}
-
-	int get_size()const
+	char* get_str()
+	{
+		return str;
+	}
+	size_t get_size()const
 	{
 		return size;
 	}
-	void set_size(int size)
+	/*void set_size(int size)
 	{
 		this->size = size;
 	}
 	void set_str(int i, const char lit)
 	{
 		this->str[i] = lit;
-	}
+	}*/
 
 	// Constructors
 	explicit String(size_t size=80)
@@ -51,6 +54,15 @@ public:
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor:" << this << endl;
 	}
+	String(String&& other)
+	{
+		//Shallow copy:
+		this->size = other.size;
+		this->str = other.str;
+		other.size = 0;
+		other.str = nullptr;
+		cout << "MoveConstructor:" << this << endl;
+	}
 	~String()
 	{
 		delete[]this->str;
@@ -75,11 +87,19 @@ public:
 		cout << "size:\t" << size << endl;
 		cout << "str:\t" << str << endl;
 	}
+	char operator[](int i)const		//i - index
+	{
+		return str[i];
+	}
+	char& operator[](int i)
+	{
+		return str[i];
+	}
 };
 
 String operator+(const String&left, const String&right)
 {
-	String temp (left.get_size() + right.get_size());
+	/*String temp (left.get_size() + right.get_size());
 	int i = 0;
 	for (; i < left.get_size()-1; i++)
 	{
@@ -94,7 +114,15 @@ String operator+(const String&left, const String&right)
 		temp.set_str(i, right.get_str()[j]);
 		
 	}
-	return temp;
+	return temp;*/
+	String cat(left.get_size() + right.get_size() - 1);
+	for (int i = 0; i < left.get_size(); i++)
+		cat[i] = left[i];
+	//cat.get_str()[i] = left.get_str()[i];
+	for (int i = 0; i < right.get_size(); i++)
+		cat[i + left.get_size() - 1] = right[i];
+	//cat.get_str()[i + left.get_size() - 1] = right.get_str()[i];
+	return cat;
 }
 
 ostream& operator<<(ostream& os, const String& obj)

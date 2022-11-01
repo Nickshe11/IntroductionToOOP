@@ -1,6 +1,6 @@
-﻿#include<iostream>
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
 using namespace std;
-
 #define delimiter "\n_______________________________"
 
 class Fraction;//Объявление класса
@@ -24,7 +24,7 @@ public:
 	{
 		return denominator;
 	}
-	void set_ineger(int integer)
+	void set_integer(int integer)
 	{
 		this->integer = integer;
 	}
@@ -226,21 +226,58 @@ public:
 		denominator /= GCD;
 		return *this;
 	}
+};
 
-	ostream& operator>> (ostream& os)
+istream& operator>>(istream& is, Fraction& obj)
+{
+	/*int integer, numerator, denominator;
+	is >> integer >> numerator >> denominator;
+	obj = Fraction(integer, numerator, denominator);*/
+	const int SIZE = 256;
+	char buffer[SIZE]{};
+	//is >> buffer;
+	is.getline(buffer, SIZE);
+	//	1(2/3)
+	//	1/2
+	//	2 3/4
+	char delimiters[] = "()/ ";
+	int number[3] = {};	//здесь будут храниться числа, извеченные из строки.
+
+	int n = 0;
+	/*for (char* pch = strtok(buffer, delimiters); pch; pch = strtok(NULL, delimiters))
 	{
-		int num, denom;
-		char d;
-		cin >> num;
-		cin >> d;
-		cin >> denom;
-		if (denom == 0) return os;
-		this->numerator = num;
-		this->denominator = denom;
-		return os;
+		//pch - это указатель, который хранит адрес токена.
+		//токен - это часть строки, находящаяся между двумя разделителями
+		number[n++] = atoi(pch);
+//atoi(char* str);	//ASCII string to integer
+		//https://cplusplus.com/reference/cstdlib/atoi/
+	}*/
+	//https://cplusplus.com/reference/cstring/strtok/
+	char* pch = strtok(buffer, delimiters);
+	do
+	{
+		number[n++] = atoi(pch);//to_int_number
+		//atoi - ASCII string to Integer
+		if (n >= 3)break;
+	} while (pch = strtok(0, delimiters));
+
+	//for (int i = 0; i < n; i++)cout << number[i] << "\t";	cout << endl;
+	obj = Fraction();
+	switch (n)
+	{
+	case 1: obj.set_integer(number[0]); break;
+	case 2:
+		obj.set_numerator(number[0]);
+		obj.set_denominator(number[1]);
+		break;
+	case 3:
+		obj.set_integer(number[0]);
+		obj.set_numerator(number[1]);
+		obj.set_denominator(number[2]);
 	}
 
-};
+	return is;
+}
 ostream& operator<<(ostream& os, const Fraction& obj)
 {
 	if (obj.get_integer())os << obj.get_integer();
@@ -358,8 +395,8 @@ bool operator<=(const Fraction& left, const Fraction& right)
 //#define COMPOUND_ASSIGNMENTS_CHECK
 //#define COMPARISON_OPERATORS_CHECK
 //#define CONVERCION_FROM_OTHER_TO_CLASS
-#define HOME_WORK_1
-#define HOME_WORK_2
+//#define HOME_WORK_1
+//#define HOME_WORK_2
 
 void main()
 {
