@@ -1,10 +1,10 @@
-#include<iostream>
+ï»¿#include<iostream>
 using namespace std;
 
 class String
 {
-	size_t size; //ðàçìåð ñòðîêè â áàéòàõ
-	char* str; //óêàçàòåëü íà ñòðîêó â äèíàìè÷åñêîé ïàìÿòè
+	size_t size; //Ñ€Ð°Ð·Ð¼ÐµÑ€ ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ð² Ð±Ð°Ð¹Ñ‚Ð°Ñ…
+	char* str; //ÑƒÐºÐ°Ð·Ð°Ñ‚ÐµÐ»ÑŒ Ð½Ð° ÑÑ‚Ñ€Ð¾ÐºÑƒ Ð² Ð´Ð¸Ð½Ð°Ð¼Ð¸Ñ‡ÐµÑÐºÐ¾Ð¹ Ð¿Ð°Ð¼ÑÑ‚Ð¸
 public:
 	const char* get_str()const
 	{
@@ -39,7 +39,7 @@ public:
 	}*/
 	String(const char str[])
 	{
-		this->size = strlen(str) + 1; // +1 íà òåðìèíèðóþùèé íîëü
+		this->size = strlen(str) + 1; // +1 Ð½Ð° Ñ‚ÐµÑ€Ð¼Ð¸Ð½Ð¸Ñ€ÑƒÑŽÑ‰Ð¸Ð¹ Ð½Ð¾Ð»ÑŒ
 		this->str = new char [size] {};
 		for (int i = 0; i < size; i++)this->str[i] = str[i]; 
 		cout << "Constructor:\t" << endl;
@@ -109,11 +109,11 @@ void main()
 {
 	setlocale(LC_ALL, "");
 #ifdef CONSTRUCTORS_CHECK
-	String str1; // ïóñòàÿ ñòðîêà ðàçìåðîì 80 Áàéò
+	String str1; // Ð¿ÑƒÑÑ‚Ð°Ñ ÑÑ‚Ñ€Ð¾ÐºÐ° Ñ€Ð°Ð·Ð¼ÐµÑ€Ð¾Ð¼ 80 Ð‘Ð°Ð¹Ñ‚
 	str1.print();
 	cout << str1 << endl;
 
-	String str2(22);// Ñêîáêè âìåñòî îïåðàòîðà ïðèñâàèâàíèÿ èç-çà òîãî, ÷òî êîíñòðóêòîð ñäåëàëè explicit
+	String str2(22);// Ð¡ÐºÐ¾Ð±ÐºÐ¸ Ð²Ð¼ÐµÑÑ‚Ð¾ Ð¾Ð¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€Ð° Ð¿Ñ€Ð¸ÑÐ²Ð°Ð¸Ð²Ð°Ð½Ð¸Ñ Ð¸Ð·-Ð·Ð° Ñ‚Ð¾Ð³Ð¾, Ñ‡Ñ‚Ð¾ ÐºÐ¾Ð½ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€ ÑÐ´ÐµÐ»Ð°Ð»Ð¸ explicit
 	str2.print();
 
 	String str3 = "Hello";
