@@ -48,19 +48,19 @@ public:
 		this->str = new char[size] {};
 		cout << "Constructor:\t" << this << endl;
 	}*/
-	String(const char str[]):size(strlen(str)+1), str (new char [size] {})
+	String(const char str[]):String(strlen(str)+1)
 	{
 		//this->size = strlen(str) + 1; // +1 на терминирующий ноль
 		//this->str = new char [size] {};
 		for (int i = 0; i < size; i++)this->str[i] = str[i];
 		cout << "Constructor:\t" << endl;
 	}
-	String(const String& other) : size(other.size), str(new char[size]{})
+	String(const String& other) : String(other.str)
 	{
 		//Deep copy - побитовое копирование
 		/*this->size = other.size;
 		this->str = new char[size] {};*/
-		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
+		//for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor:" << this << endl;
 	}
 	String(String&& other):size(other.size), str(other.str)
