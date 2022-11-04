@@ -36,11 +36,11 @@ public:
 	}*/
 
 	// Constructors
-	explicit String(size_t size = 80)
+	explicit String(size_t size = 80):size(size), str(new char[size]{})
 	{
-		this->size = size;
-		this->str = new char[size] {};
-		cout << "DefaultConstructor:\t" << this << endl;
+		//this->size = size;
+		//this->str = new char[size] {}; если память выделили в заголовке, в теле мы ее не выделяем
+		cout << "DefConstructor:\t" << this << endl;
 	}
 	/*String(size_t size)
 	{
@@ -48,25 +48,26 @@ public:
 		this->str = new char[size] {};
 		cout << "Constructor:\t" << this << endl;
 	}*/
-	String(const char str[])
+	String(const char str[]):size(strlen(str)+1), str (new char [size] {})
 	{
-		this->size = strlen(str) + 1; // +1 на терминирующий ноль
-		this->str = new char [size] {};
+		//this->size = strlen(str) + 1; // +1 на терминирующий ноль
+		//this->str = new char [size] {};
 		for (int i = 0; i < size; i++)this->str[i] = str[i];
 		cout << "Constructor:\t" << endl;
 	}
-	String(const String& other)
+	String(const String& other) : size(other.size), str(new char[size]{})
 	{
-		this->size = other.size;
-		this->str = new char[size] {};
+		//Deep copy - побитовое копирование
+		/*this->size = other.size;
+		this->str = new char[size] {};*/
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor:" << this << endl;
 	}
-	String(String&& other)
+	String(String&& other):size(other.size), str(other.str)
 	{
 		//Shallow copy:
-		this->size = other.size;
-		this->str = other.str;
+		/*this->size = other.size;
+		this->str = other.str;*/
 		other.size = 0;
 		other.str = nullptr;
 		cout << "MoveConstructor:" << this << endl;
@@ -158,6 +159,7 @@ ostream& operator<<(ostream& os, const String& obj)
 
 //#define CONSTRUCTORS_CHECK;
 #define OPERATOR_PLUS_CHECK
+//#define WAYS_TO_CALL_CONSTRUCTORS
 
 void main()
 {
@@ -193,5 +195,25 @@ void main()
 	cout << str4 << endl;
 	str1 += str2;
 	cout << str1 << endl;
+	String str5 = str1;
+	cout << str5 << endl;
 #endif // OPERATOR_PLUS_CHECK
+
+#ifdef WAYS_TO_CALL_CONSTRUCTORS
+	String str1;			//DefaultConstructor
+	String str2(5);			//SingleArgument type 'int'
+	String str3 = "Hello";	//SingleArgument type 'const char'
+	String str4();			//Это выражение НЕ создает объект, а просто объявляет функцию str4, которая ничего не принимает и возвращает значение типа 'String'
+							//компилятор эту строку пропускает
+	//str4.print();
+	// Если нужно явно вызвать конструктор по умлолчанию, то это можно сделать так:
+	String str5{};			// Явный вызов конструктора по умолчанию
+	str5.print();
+	String str6{ 7 };
+	str6.print();
+	String str7{ "Hello" };
+	str7.print();
+#endif // WAYS_TO_CALL_CONSTRUCTORS
+
+
 }
