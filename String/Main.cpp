@@ -5,7 +5,11 @@ using std::cin;
 using std::cout;
 using std::endl;
 
+class String;
+String operator+(const String& left, const String& right);
+
 class String
+	
 {
 	size_t size; //размер строки в байтах
 	char* str; //указатель на строку в динамической памяти
@@ -86,6 +90,8 @@ public:
 	}
 	String& operator= (String&& other)
 	{
+		if (this == &other)return *this;
+		delete[] this->str;
 		this->size = other.size;
 		this->str = other.str;
 		cout << "MoveAssignment:" << this << endl;
@@ -93,6 +99,11 @@ public:
 		other.str = nullptr;
 		return *this;
 	}
+	String operator+=(String& other)
+	{
+		return *this = *this + other;
+	}
+	
 
 	//Methods
 	void print()const
@@ -138,6 +149,8 @@ String operator+(const String& left, const String& right)
 	return cat;
 }
 
+
+
 ostream& operator<<(ostream& os, const String& obj)
 {
 	return os << obj.get_str();
@@ -178,5 +191,7 @@ void main()
 	str4 = str2+str1;
 	cout << delimiter << endl;
 	cout << str4 << endl;
+	str1 += str2;
+	cout << str1 << endl;
 #endif // OPERATOR_PLUS_CHECK
 }
