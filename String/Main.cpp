@@ -1,5 +1,9 @@
 ﻿#include<iostream>
 using namespace std;
+#define delimiter "________________________________________"
+using std::cin;
+using std::cout;
+using std::endl;
 
 class String
 {
@@ -28,7 +32,7 @@ public:
 	}*/
 
 	// Constructors
-	explicit String(size_t size=80)
+	explicit String(size_t size = 80)
 	{
 		this->size = size;
 		this->str = new char[size] {};
@@ -44,13 +48,13 @@ public:
 	{
 		this->size = strlen(str) + 1; // +1 на терминирующий ноль
 		this->str = new char [size] {};
-		for (int i = 0; i < size; i++)this->str[i] = str[i]; 
+		for (int i = 0; i < size; i++)this->str[i] = str[i];
 		cout << "Constructor:\t" << endl;
 	}
 	String(const String& other)
 	{
 		this->size = other.size;
-		this->str=new char[size] {};
+		this->str = new char[size] {};
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor:" << this << endl;
 	}
@@ -80,6 +84,15 @@ public:
 		cout << "CopyAssignment:\t" << this << endl;
 		return *this;
 	}
+	String& operator= (String&& other)
+	{
+		this->size = other.size;
+		this->str = other.str;
+		cout << "MoveAssignment:" << this << endl;
+		other.size = 0;
+		other.str = nullptr;
+		return *this;
+	}
 
 	//Methods
 	void print()const
@@ -97,7 +110,7 @@ public:
 	}
 };
 
-String operator+(const String&left, const String&right)
+String operator+(const String& left, const String& right)
 {
 	/*String temp (left.get_size() + right.get_size());
 	int i = 0;
@@ -107,12 +120,12 @@ String operator+(const String&left, const String&right)
 	}
 	temp.set_str(i, ' ');
 	i++;
-	
+
 	for (int j = 0; i < left.get_size()+ right.get_size(); i++,j++)
 	{
-		
+
 		temp.set_str(i, right.get_str()[j]);
-		
+
 	}
 	return temp;*/
 	String cat(left.get_size() + right.get_size() - 1);
@@ -158,7 +171,12 @@ void main()
 #ifdef OPERATOR_PLUS_CHECK
 	String str1 = "Hello";
 	String str2 = "World";
+	String str4;
 	String str3 = str1 + str2;
 	cout << str3 << endl;
+	cout << delimiter << endl;
+	str4 = str2+str1;
+	cout << delimiter << endl;
+	cout << str4 << endl;
 #endif // OPERATOR_PLUS_CHECK
 }
